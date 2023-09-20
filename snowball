@@ -1,0 +1,21 @@
+// Пример анализа текста и выделения ключевых слов на Kotlin
+import org.tartarus.snowball.SnowballStemmer
+import org.tartarus.snowball.ext.RussianStemmer
+
+fun main() {
+    val text = "Социология изучает общество и его структуры."
+
+    val keywords = extractKeywords(text)
+    println("Ключевые слова: ${keywords.joinToString(", ")}")
+}
+
+fun extractKeywords(text: String): List<String> {
+    val words = text.split("\\s+".toRegex())
+    val stemmer: SnowballStemmer = RussianStemmer()
+    val stemmedWords = words.map { word ->
+        stemmer.setCurrent(word)
+        stemmer.stem()
+        stemmer.current
+    }
+    return stemmedWords.distinct()
+}
